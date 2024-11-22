@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory Management Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background-color: #f8f9fa; font-family: Arial, sans-serif;">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="margin-bottom: 20px;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#" style="font-weight: bold;">Perishable Goods Management</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#dashboard">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="#harvest">Harvest</a></li>
+          <li class="nav-item"><a class="nav-link" href="#warehouse">Warehouse</a></li>
+          <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="#distributors">Distributors</a></li>
+          <li class="nav-item"><a class="nav-link" href="#users">Users</a></li>
+          <li class="nav-item"><a class="nav-link" href="#reports">Reports</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Log out</a></li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard -->
+  <div class="container mt-4" id="dashboard">
+    <h2 style="margin-bottom: 20px; color: #343a40;">Dashboard Overview</h2>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card text-white bg-info mb-3" style="text-align: center;">
+          <div class="card-body">
+            <h5 class="card-title">Total Inventory</h5>
+            <p class="card-text">4500 Units</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-warning mb-3" style="text-align: center;">
+          <div class="card-body">
+            <h5 class="card-title">Products Expiring Soon</h5>
+            <p class="card-text">120 Products</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-white bg-success mb-3" style="text-align: center;">
+          <div class="card-body">
+            <h5 class="card-title">Pending Demand</h5>
+            <p class="card-text">1500 Units</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Harvest Management -->
+  <!-- <div class="container mt-4" id="harvest">
+    <h2 style="color: #343a40;">Harvest Management</h2>
+    <form>
+      <div class="mb-3"> -->
+        <!-- <label for="cropType" class="form-label">Crop Type</label>
+        <input type="text" class="form-control" id="cropType" placeholder="Enter crop type">
+      </div>
+      <div class="mb-3">
+        <label for="quantity" class="form-label">Quantity</label>
+        <input type="number" class="form-control" id="quantity" placeholder="Enter quantity">
+      </div>
+      <div class="mb-3">
+        <label for="harvestDate" class="form-label">Harvest Date</label>
+        <input type="date" class="form-control" id="harvestDate">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form> -->
+  <!-- </div> -->
+
+  <!-- Warehouse Management -->
+  <div class="container mt-4" id="warehouse">
+    <h2 style="color: #343a40;">Warehouse Management</h2>
+    <p>Manage your warehouse details and link products to respective warehouses.</p>
+  </div>
+
+  <!-- Product Management -->
+  <div class="container mt-4" id="products">
+    <h2 style="color: #343a40;">Product Management</h2>
+    <p>Manage and track product nutrition details and expiration dates.</p>
+  </div>
+
+  <!-- Distributor Management -->
+  <div class="container mt-4" id="distributors">
+    <h2 style="color: #343a40;">Distributor Management</h2>
+    <p>Track distributor details and monitor product demand.</p>
+  </div>
+
+  <!-- User Management -->
+  <div class="container mt-4" id="users">
+    <h2 style="color: #343a40;">User Management</h2>
+    <p>Manage roles and credentials for users like Warehouse Managers and Distributors.</p>
+  </div>
+
+  <!-- Reports -->
+  <div class="container mt-4" id="reports">
+    <h2 style="color: #343a40;">Reports & Analytics</h2>
+    <p>Generate reports for inventory, sales, and product movement with visual graphs.</p>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
