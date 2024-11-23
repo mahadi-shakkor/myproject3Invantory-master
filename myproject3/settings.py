@@ -37,8 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myapp', 
-     'django_extensions',
-      'rest_framework', # Add your app here
+    'django_extensions',
+    
+    'rest_framework', # Add your app here
 ]
 
 
@@ -149,7 +150,7 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # In settings.py
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',  # Default backend
-    'myapp.backends.EmailBackend',  # Custom email authentication backend
-)
+AUTHENTICATION_BACKENDS = [
+    'myapp.backends.CustomBackend',
+]
+
