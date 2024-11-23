@@ -17,7 +17,7 @@ class UserFormsignup(forms.ModelForm):
     
 
 from django import forms
-from .models import User
+from .models   import User
 
 class LoginForm(forms.Form):
     userid = forms.IntegerField(label="User ID")
