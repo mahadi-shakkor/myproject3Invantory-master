@@ -46,9 +46,26 @@ router.register(r'seed-stock', SeedStockViewSet)
 router.register(r'seed-stock20', SeedStock20ViewSet)
 router.register(r'sensor', SensorViewSet)
 router.register(r'supplier', SupplierViewSet)
+router.register(r'users', UserViewSet)
 router.register(r'wirehouse', WirehouseViewSet)
 router.register(r'wirehouse-manager', WirehouseManagerViewSet)
 
+
+
+from django.urls import path
+from .views import UserLoginAPIView
+
 urlpatterns = [
     path('api/', include(router.urls)),
+    path('api/login/', UserLoginAPIView.as_view(), name='api-login'),
+    path('home/', home_view, name='home'),
 ]
+
+
+
+from rest_framework.permissions import IsAuthenticated
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]

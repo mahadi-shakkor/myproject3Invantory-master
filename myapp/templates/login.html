@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <label for="userid">User ID:</label>
+            <input type="text" id="userid" name="userid" required>
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <br>
+            <button type="submit">Login</button>
+        </form>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent the form from submitting traditionally
+
+            const userid = document.getElementById('userid').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/login/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCSRFToken() // Ensure CSRF protection
+                    },
+                    body: JSON.stringify({ userid, password })
+                });
+
+                const data = await response.json();
+                const messageDiv = document.getElementById('message');
+
+                if (response.ok) {
+                    messageDiv.innerHTML = `<p style="color:green;">${data.message}</p>`;
+                    window.location.href = '/home/'; // Redirect to home or another page
+                } else {
+                    messageDiv.innerHTML = `<p style="color:red;">${data.error}</p>`;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        function getCSRFToken() {
+            const cookies = document.cookie.split(';');
+            for (const cookie of cookies) {
+                const [name, value] = cookie.trim().split('=');
+                if (name === 'csrftoken') {
+                    return value;
+                }
+            }
+            return '';
+        }
+    </script>
+</body>
+</html>

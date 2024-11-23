@@ -2,6 +2,48 @@ from rest_framework import viewsets
 from .models import *
 from .serializers import *
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
+from django.contrib.auth import authenticate, login
+from rest_framework import status
+
+class UserLoginAPIView(APIView):
+    permission_classes = [AllowAny]  # No authentication required for login
+
+    def post(self, request, *args, **kwargs):
+        userid = request.data.get('userid')
+        password = request.data.get('password')
+
+        if not userid or not password:
+            return Response({'error': 'User ID and Password are required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        user = authenticate(username=userid, password=password)
+        if user:
+            login(request, user)  # Log the user in
+            return Response({'message': 'Login successful.'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'error': 'Invalid credentials.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+@login_required
+def home_view(request):
+    return render(request, 'home.html')
+
+from rest_framework import viewsets
+from .models import User
+from .serializers import UserSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    A simple ViewSet for viewing and editing users.
+    """
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
 class AgriculturalOfficerViewSet(viewsets.ModelViewSet):
     queryset = AgriculturalOfficer.objects.all()
     serializer_class = AgriculturalOfficerSerializer
