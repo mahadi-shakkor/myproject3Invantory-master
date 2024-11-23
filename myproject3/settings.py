@@ -59,7 +59,7 @@ import os
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Add this line
+        'DIRS': [BASE_DIR / 'templates'],  # Add your templates folder
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,6 +71,10 @@ TEMPLATES = [
         },
     },
 ]
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']  # Add your static folder
+
 
 
 WSGI_APPLICATION = 'myproject3.wsgi.application'
@@ -133,5 +137,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / "static"]
+
