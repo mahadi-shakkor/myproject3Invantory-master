@@ -7,6 +7,39 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate, login
 from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.models import User
+from rest_framework.exceptions import ValidationError
+
+class SignupAPIView(APIView):
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        email = request.data.get('email')
+        password = request.data.get('password')
+        
+        if not username or not password:
+            raise ValidationError("Username and password are required.")
+        
+        if User.objects.filter(username=username).exists():
+            raise ValidationError("A user with this username already exists.")
+        
+        user = User.objects.create_user(username=username, email=email, password=password)
+        return Response({"message": "User created successfully!"}, status=status.HTTP_201_CREATED)
+
+from django.shortcuts import render
+
+def signup_page(request):
+    return render(request, 'signup.html')
+
+
+@api_view(['GET'])
+def sample_api(request):
+    return Response({'message': 'Hello from Django!'})
 
 class UserLoginAPIView(APIView):
     permission_classes = [AllowAny]  # No authentication required for login

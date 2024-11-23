@@ -41,6 +41,12 @@ INSTALLED_APPS = [
     
     'rest_framework', # Add your app here
 ]
+INSTALLED_APPS += ['corsheaders']
+
+# Allow all origins (or restrict to your React app domain)
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
 
 
 MIDDLEWARE = [
@@ -52,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+MIDDLEWARE.insert(0, 'corsheaders.middleware.CorsMiddleware')
 
 ROOT_URLCONF = 'myproject3.urls'
 

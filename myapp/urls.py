@@ -1,6 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import *
+from rest_framework.permissions import IsAuthenticated
 
 router = DefaultRouter()
 router.register(r'agricultural-officer', AgriculturalOfficerViewSet)
@@ -49,21 +50,30 @@ router.register(r'supplier', SupplierViewSet)
 router.register(r'users', UserViewSet)
 router.register(r'wirehouse', WirehouseViewSet)
 router.register(r'wirehouse-manager', WirehouseManagerViewSet)
+from django.urls import path
+from .views import sample_api
 
-
+from django.views.generic import TemplateView
 
 from django.urls import path
 from .views import UserLoginAPIView
+from django.contrib import admin
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('signup/', TemplateView.as_view(template_name='signup.html'), name='signup'),  # Add this line
+     
+    path('api/signup/', SignupAPIView.as_view(), name='api-signup'),
     path('api/', include(router.urls)),
     path('api/login/', UserLoginAPIView.as_view(), name='api-login'),
     path('home/', home_view, name='home'),
+    path('api/sample/', sample_api),
 ]
 
 
 
-from rest_framework.permissions import IsAuthenticated
+
+
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
