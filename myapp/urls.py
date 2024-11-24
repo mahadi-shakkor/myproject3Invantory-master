@@ -58,8 +58,9 @@ from django.views.generic import TemplateView
 from django.urls import path
 from .views import UserLoginAPIView
 from django.contrib import admin
-
+from . import views
 urlpatterns = [
+    path('signup/', signup_view, name='signup'),
     path('admin/', admin.site.urls),
     path('signup/', TemplateView.as_view(template_name='signup.html'), name='signup'),  # Add this line
      
@@ -68,9 +69,21 @@ urlpatterns = [
     path('api/login/', UserLoginAPIView.as_view(), name='api-login'),
     path('home/', home_view, name='home'),
     path('api/sample/', sample_api),
+    path('d', views.submit_user_form, name='submit_user_form'),
 ]
 
 
+from django.conf import settings
+from django.urls import include, path
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 
 

@@ -15,21 +15,124 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
 from rest_framework.exceptions import ValidationError
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.models import User
+from rest_framework.exceptions import ValidationError
 
-class SignupAPIView(APIView):
-    def post(self, request, *args, **kwargs):
+class UserCreateView(APIView):
+    def post(self, request):
         username = request.data.get('username')
         email = request.data.get('email')
         password = request.data.get('password')
-        
-        if not username or not password:
-            raise ValidationError("Username and password are required.")
-        
+
         if User.objects.filter(username=username).exists():
-            raise ValidationError("A user with this username already exists.")
-        
+            raise ValidationError({"detail": "Username already exists."})
+
         user = User.objects.create_user(username=username, email=email, password=password)
-        return Response({"message": "User created successfully!"}, status=status.HTTP_201_CREATED)
+        return Response({"message": "User created successfully", "username": user.username}, status=status.HTTP_201_CREATED)
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth.models import User
+from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import AllowAny
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import CustomUserSignupForm
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import CustomUserSignupForm
+from django.http import HttpResponse
+from django.shortcuts import render
+
+from django.shortcuts import render
+from django.http import HttpResponse
+
+def submit_user_form(request):
+    if request.method == "POST":
+        # Process form data
+        userid = request.POST.get('userid')
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        usertype = request.POST.get('usertype')
+        street = request.POST.get('street')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        country = request.POST.get('country')
+        postalcode = request.POST.get('postalcode')
+        location = Location(
+            street=street,
+            city=city,
+            state=state,
+            country=country,
+            postalcode=postalcode,   
+        )
+        location.save()
+
+        user = User(
+            name=name,
+            email=email,
+            password=password,
+            location=location)  # Associate location if available
+
+        # Save the user to the database
+        user.save()
+
+        # Save the object to the database
+
+        # Example: Print the data or save it to a database
+        print(f"User ID: {userid}, Name: {name}, Email: {email}")
+
+
+        # Provide feedback to the user
+        return HttpResponse("Form submitted successfully!")
+
+    # Render the form for GET requests
+    return render(request, 'submit_user_form.html')
+
+def signup_view(request):
+    print(f"Request Method: {request.method}")  # Log the request method
+    if request.method == 'POST':
+        form = CustomUserSignupForm(request.POST)
+        print(f"Form Data: {request.POST}")  # Log form data
+
+        if form.is_valid():
+            print("Form is valid")  # Log success
+            user = form.save()
+            print(f"User Saved: {user}")  # Log saved user
+            messages.success(request, "Account created successfully! Please log in.")
+            return redirect('login')  # Redirect to login
+        else:
+            print("Form Errors:", form.errors)  # Log form errors
+            messages.error(request, "Please correct the errors below.")
+    else:
+        form = CustomUserSignupForm()
+
+    return render(request, 'signup.html', {'form': form})
+
+class SignupAPIView(APIView):
+    permission_classes = [AllowAny]  # Allow anyone to access this view
+
+    def post(self, request):
+        username = request.data.get('username')
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        # Validation
+        if not username or not password:
+            return Response({"detail": "Username and password are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if User.objects.filter(username=username).exists():
+            return Response({"detail": "Username already exists."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create user
+        user = User.objects.create_user(username=username, email=email, password=password)
+        return Response({"message": "User created successfully", "username": user.username}, status=status.HTTP_201_CREATED)
+
 
 from django.shortcuts import render
 
